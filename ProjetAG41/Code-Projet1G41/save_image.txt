@@ -1,0 +1,12 @@
+#set term postscript portrait
+#set output "mondessin.ps"
+#set size 0.7, 0.7
+#replot
+
+#sortie PNG
+set terminal png size 450,360 small
+set output 'image_png.png'
+set size 1, 1
+replot
+#load 'sombrero.gp'
+#quit

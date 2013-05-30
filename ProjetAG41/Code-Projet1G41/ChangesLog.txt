@@ -1,0 +1,6 @@
+03 November 2010
+   released version 1.0.0 of interferences
+
+     Change log:
+        -Added: début des logs
+
