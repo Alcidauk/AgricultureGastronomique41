@@ -53,7 +53,7 @@ class Fitness
                 fit += secteur::secteurNonCouvert->get_clients(no_scen);
 		}
 
-		if (no_scen==-1) return (fit/nb_stable)/7;
+		if (no_scen==-1) return (fit/nb_stable);
 		else return fit/nb_stable;
     };
 
