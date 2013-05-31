@@ -426,3 +426,222 @@ site 35 nb sect = 3
 <<<<<<<<<<<<<<
 resultats de sortie
 ------------------------------------------------------0-----------------------------------------------
+le nombre de clients tires1538
+Optimisation robuste des fréquences
+les parametres de l optimisation
+12h15
+facteur de stabilite= 10
+le critere est: le nombre de clients non couverts
+le nombre d iteration 0
+site 0 nb sect = 2
+site 0 nb sect = 2
+site 1 nb sect = 2
+site 1 nb sect = 2
+site 2 nb sect = 2
+site 2 nb sect = 2
+site 3 nb sect = 2
+site 3 nb sect = 2
+site 4 nb sect = 3
+site 4 nb sect = 3
+site 5 nb sect = 2
+site 5 nb sect = 2
+site 6 nb sect = 2
+site 6 nb sect = 2
+site 7 nb sect = 3
+site 7 nb sect = 3
+site 8 nb sect = 3
+site 8 nb sect = le nombre de clients tires1538
+Optimisation robuste des fréquences
+les parametres de l optimisation
+12h15
+facteur de stabilite= 10
+le critere est: le nombre de clients non couverts
+le nombre d iteration 0
+site 0 nb sect = 2
+site 0 nb sect = 2
+site 1 nb sect = 2
+site 1 nb sect = 2
+site 2 nb sect = 2
+site 2 nb sect = 2
+site 3 nb sect = 2
+site 3 nb sect = 2
+site 4 nb sect = 3
+site 4 nb sect = 3
+site 5 nb sect = 2
+site 5 nb sect = 2
+site 6 nb sect = 2
+site 6 nb sect = 2
+site 7 nb sect = 3
+site 7 nb sect = 3
+site 8 nb sect = 3
+site 8 nb sect = 3
+le site8
+24 --> 22.5
+freq=1 0 2
+non couverts t = 22.5
+non couverts 1 = 22.5
+site 9 nb sect = 2
+site 9 nb sect = 2
+site 10 nb sect = 2
+site 10 nb sect = 2
+site 11 nb sect = 2
+site 11 nb sect = 2
+le site11
+22.5 --> 21.5
+freq=0 2 1
+non couverts t = 21.5
+non couverts 1 = 21.5
+site 12 nb sect = 1
+site 13 nb sect = 3
+site 13 nb sect = 3
+le site13
+21.5 --> 20.5
+freq=1 0 2
+non couverts t = 20.5
+non couverts 1 = 20.5
+site 14 nb sect = 3
+site 14 nb sect = 3
+le site14
+20.5 --> 19.5
+freq=1 0 2
+non couverts t = 19.5
+non couverts 1 = 19.5
+site 15 nb sect = 3
+site 15 nb sect = 3
+le site15
+19.5 --> 16.5
+freq=2 1 0
+non couverts t = 16.5
+non couverts 1 = 16.5
+site 16 nb sect = 3
+site 16 nb sect = 3
+le site16
+16.5 --> 15
+freq=2 1 0
+non couverts t = 15
+non couverts 1 = 15
+site 17 nb sect = 2
+site 17 nb sect = 2
+le site17
+15 --> 14
+freq=2 0 1
+non couverts t = 14
+non couverts 1 = 14
+site 18 nb sect = 3
+site 18 nb sect = 3
+site 19 nb sect = 2
+site 19 nb sect = 2
+site 20 nb sect = 3
+site 20 nb sect = 3
+site 21 nb sect = 3
+site 21 nb sect = 3
+le site21
+14 --> 13.5
+freq=0 2 1
+non couverts t = 13.5
+non couverts 1 = 13.5
+site 22 nb sect = 3
+site 22 nb sect = 3
+le site22
+13.5 --> 13
+freq=2 0 1
+non couverts t = 13
+non couverts 1 = 13
+site 23 nb sect = 3
+site 23 nb sect = 3
+le site23
+13 --> 10
+freq=1 0 2
+non couverts t = 10
+non couverts 1 = 10
+site 24 nb sect = 2
+site 24 nb sect = 2
+le site24
+10 --> 9
+freq=2 1 0
+non couverts t = 9
+non couverts 1 = 9
+site 25 nb sect = 2
+site 25 nb sect = 2
+le site25
+9 --> 8
+freq=1 2 0
+non couverts t = 8
+non couverts 1 = le nombre de clients tires1538
+Optimisation robuste des fréquences
+les parametres de l optimisation
+12h15
+facteur de stabilite= 10
+le critere est: le nombre de clients non couverts
+le nombre d iteration 0
+site 0 nb sect = 2
+site 0 nb sect = 2
+site 1 nb sect = 2
+site 1 nb sect = 2
+site 2 nb sect = 2
+site 2 nb sect = 2
+site 3 nb sect = 2
+site 3 nb sect = 2
+site 4 nb sect = 3
+site 4 nb sect = 3
+site 5 nb sect = 2
+site 5 nb sect = 2
+site 6 nb sect = 2
+site 6 nb sect = 2
+site 7 nb sect = 3
+site 7 nb sect = 3
+site 8 nb sect = 3
+site 8 nb sect = le nombre de clients tires1538
+Optimisation robuste des fréquences
+les parametres de l optimisation
+12h15
+facteur de stabilite= 10
+le critere est: le nombre de clients non couverts
+le nombre d iteration 0
+site 0 nb sect = 2
+site 0 nb sect = 2
+site 1 nb sect = 2
+site 1 nb sect = 2
+site 2 nb sect = 2
+site 2 nb sect = 2
+site 3 nb sect = 2
+site 3 nb sect = 2
+site 4 nb sect = 3
+site 4 nb sect = 3
+site 5 nb sect = 2
+site 5 nb sect = 2
+site 6 nb sect = 2
+site 6 nb sect = 2
+site 7 nb sect = 3
+site 7 nb sect = 3
+site 8 nb sect = 3
+site 8 nb sect = 3
+site 9 nb sect = 2
+site 9 nb sect = 2
+site 10 nb sect = 2
+site 10 nb sect = 2
+site 11 nb sect = 2
+site 11 nb sect = 2
+site 12 nb sect = 1
+site 13 nb sect = 3
+site 13 nb sect = 3
+le site13
+23.5 --> 23
+freq=3 1 2
+non couverts t = 23
+non couverts 1 = 23
+site 14 nb sect = 3
+site 14 nb sect = 3
+site 15 nb sect = 3
+site 15 nb sect = 3
+le site15
+23 --> 17
+freq=1 2 3
+non couverts t = 17
+non couverts 1 = 17
+site 16 nb sect = 3
+site 16 nb sect = 3
+site 17 nb sect = 2
+site 17 nb sect = 2
+site 18 nb sect = 3
+site 18

@@ -174,6 +174,121 @@ cout << "ssd" << endl;
 void site::load_sites_file_freqaleatoire(char* file_name)
 {
    // insérer la procédure ici (Projet AG41)
+
+       GInputFile infile(file_name) ;
+    char* buf ;
+    //char *tok ;
+    infile.open() ;
+    cout<<"\n>> Chargement des informations des sites et secteurs\n";
+    buf=infile.readLine();
+    size = infile.getNextIntToken();
+    //int size_secteur = infile.getNextIntToken();
+    infile.getNextIntToken();
+    buf=infile.readLine();
+
+    lesSites = new site*[size];
+    int _no = -1, no_sect = 0, type_antenne, patern=2, _porteurse, no_sect_absolu=0;
+    //char * name1 = "rien";
+    int thex1 = -1, they1 = -1, s_sol = -1;
+    int id, azimut, tilt_m, tilt_e, tilt_t, i_tp, j_tp;
+    char name_s[80], name_a[100], dbm[10];
+    double gain, power, thex, they, thez, h, perte_a;
+
+    int* tableFreq = NULL;
+
+    while ((buf=infile.readUncommentedLine())!=NULL) {
+        id = infile.getNextIntToken();
+        strcpy(name_s,infile.getNextToken());
+        //cout << name_s << endl;
+        thex = infile.getNextFloatToken();
+        they = infile.getNextFloatToken();
+        s_sol = infile.getNextFloatToken();
+        strcpy(name_a,infile.getNextToken());
+        //cout << name_a << endl;
+        gain = infile.getNextFloatToken();
+        h = infile.getNextFloatToken();
+        azimut = infile.getNextIntToken();
+        tilt_m = infile.getNextIntToken();
+        tilt_e = infile.getNextIntToken();
+        tilt_t = infile.getNextIntToken();
+        perte_a = infile.getNextFloatToken();
+        power = infile.getNextFloatToken();
+        strcpy(dbm,infile.getNextToken());
+        //cout << dbm << endl;
+        //if(strcmp(name1, name)==0 ){
+        if((thex1==thex)&&(they1==they)){
+            // création d'un nouveau secteur
+            no_sect ++;
+            type_antenne = 1; // antenne directive
+            if (patern==1) _porteurse = 0; //schema 1x3x1
+            if (patern==2) _porteurse = tableFreq[no_sect]; //schema 1x3x3
+            secteur* the_sect = new secteur(no_sect_absolu,no_sect, lesSites[_no], type_antenne, perte_a, gain, power, Unite::degre2radian(azimut),
+                                            tilt_m, tilt_e, _porteurse);
+            lesSites[_no]->sect.push_back(the_sect);
+            lesSites[_no]->nb_secteur++;
+        }
+       else {
+            _no++;
+            // création d'un nouveau site
+            i_tp = (int)floor(0.5+((thex-pointTest::lesPT[0][0]->get_x())*1./pointTest::pdm));
+            j_tp = (int)floor(0.5+((they-pointTest::lesPT[0][0]->get_y())*1./pointTest::pdm));
+            /*if ((i_tp < 0)||(i_tp>pointTest::size_x)||(j_tp < 0)||(j_tp>pointTest::size_y)) {
+                cout << endl << "hors departement : site no " << _no << " " <<  name_s << " " << thex << " " << they << endl;
+                thez = s_sol + h;
+            }*/
+            thez = s_sol + h;
+            lesSites[_no] = new site(_no, name_s, thex, they, thez);
+            thex1 = thex;
+            they1 = they;
+            // création d'un nouveau secteur
+            if(tableFreq)delete tableFreq;
+            tableFreq = randomizeTableFreq();
+            cout<<endl<<endl;
+            for(int i=0; i<3; i++)cout<<tableFreq[i]<<" ";
+                        cout<<endl<<endl;
+            no_sect = 0;
+            type_antenne = 1; // antenne directive
+            if (patern==1) _porteurse = 0; //schema 1x3x1
+            if (patern==2) _porteurse = tableFreq[no_sect]; //schema 1x3x3
+            secteur* the_sect = new secteur(no_sect_absolu,no_sect, lesSites[_no], type_antenne, perte_a, gain, power, Unite::degre2radian(azimut),
+                                            tilt_m, tilt_e, _porteurse);
+            lesSites[_no]->sect.push_back(the_sect);
+            lesSites[_no]->nb_secteur = 1;
+        }
+		no_sect_absolu ++;
+    }
+    infile.close();
+cout << "ssd" << endl;
+
+}
+
+int* site::randomizeTableFreq(){
+    int* tableFreq = new int[3];
+    int* table = new int[3]; for(int i=0; i<3;i++)table[i]=i+1;
+    int* tableTmp = NULL;
+    int taille = 3;
+    long random;
+    bool shift;
+    for(int i=0; i<3; i++)
+    {
+        shift = false;
+        random = Random::aleatoire(taille);
+        tableFreq[i]=table[random];
+        tableTmp = new int[taille-1];
+        for(int j=0; j<taille; j++)
+        {
+            if(j != random){
+                if(shift) tableTmp[j-1] = table[j];
+                else tableTmp[j] = table[j];
+            }
+            else{shift=true;}
+        }
+        delete table;
+        table = tableTmp;
+        taille--;
+    }
+    delete tableTmp;
+    return tableFreq;
 }
 
 /** Retourne le numéro du secteur (du site) le plus proche de '(lex,ley)'

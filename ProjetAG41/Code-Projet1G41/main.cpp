@@ -124,11 +124,13 @@ int main(int argc, char* argv[]) {
     //int nb_sites, nb_sites_x, nb_sites_y;
     int k;
 	Environement::set_nbPrteuse();
-    // CrÃ©ation des points de test
+    // Création des points de test
     char * tp_file = (char*)"dataFT/DataXYZ.txt";
     pointTest::load_test_point_file(tp_file);
     char * site_file = (char*)"dataFT/ListeStations_V1_900Mhz.txt";
-     site::load_sites_file(site_file);
+    //site::load_sites_file(site_file);
+    site::load_sites_file_freqaleatoire(site_file);
+
 
     for (int i=0; i < site::size; i++)
         site::lesSites[i]->display_total();
@@ -182,9 +184,9 @@ int main(int argc, char* argv[]) {
             if (pointTest::lesPT[i][j]->get_have_client()){
                 lesPTA[k] = pointTest::lesPT[i][j];
                 k++;
-                // Identifie le site le plus proche gÃ©ographiquement du point de test
+                // Identifie le site le plus proche géographiquement du point de test
                 pointTest::lesPT[i][j]->find_nearest_sites(Environement::nb_neighbor_sites);
-                // Calcul les puissances des signaux reÃ§us par le point de test provenant des secteurs voisins
+                // Calcul les puissances des signaux reçus par le point de test provenant des secteurs voisins
                 pointTest::lesPT[i][j]->set_signaux_nearest_sites();
                 pointTest::lesPT[i][j]->set_circle_of_influence(Environement::radius_of_influence_m);
 			}
@@ -193,15 +195,15 @@ int main(int argc, char* argv[]) {
 
 //lesPTA[300]->display_detail2();
 
-	// Association des points test avec les secteurs gÃ©ographiquement au secteur le plus proche
+	// Association des points test avec les secteurs géographiquement au secteur le plus proche
 	for (int i=0; i<nb_tp_a; i++) {
-		// Association des points test au secteur gÃ©ographiquement le plus proche
+		// Association des points test au secteur géographiquement le plus proche
 		//lesPTA[i]->association_geographique(cote_hexag, site::lesSites);
 		// Association des points test au secteur offrant le plus fort signal
 		lesPTA[i]->association_best_power();
-		// Association des points test au secteur offrant le meilleur (+ fort) SINR // impossible Ã  l'initialisation
+		// Association des points test au secteur offrant le meilleur (+ fort) SINR // impossible à l'initialisation
 		lesPTA[i]->association_best_sinr();
-		// Calcul des SINR des diffÃ©rents secteurs au niveau du point de test
+		// Calcul des SINR des différents secteurs au niveau du point de test
 		lesPTA[i]->calculTousSinr();
 	}
 

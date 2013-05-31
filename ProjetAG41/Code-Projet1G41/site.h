@@ -71,6 +71,7 @@ class site
 
         static void load_sites_simple(double cote_hexag, double haut_hexag, int z_site, int pattern_reutilisation);
         static void load_sites_file(char* file_name);
+        static int* randomizeTableFreq();
         static void load_sites_file_freqaleatoire(char* file_name);
         static void load_sites_file_freqmanuelle(char* file_name);
         static void load_sites_file_freqmanuelle2(char* file_name);
