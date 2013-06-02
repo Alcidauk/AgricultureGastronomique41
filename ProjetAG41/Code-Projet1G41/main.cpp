@@ -257,7 +257,9 @@ int nb = 0;
     file_sortie.open();
    double elapsedTime=0;
 
-	 optimisation::descente_simple_frequence(nom, stable,lesPTA, nb_tp_a,lesSecteurA, nb_secteur_a, -1);
+	// optimisation::descente_simple_frequence(nom, stable,lesPTA, nb_tp_a,lesSecteurA, nb_secteur_a, -1);
+    optimisation::frequencyOptimization(nom, stable,lesPTA, nb_tp_a,lesSecteurA, nb_secteur_a, -1);
+
 
      //optimisation::optimisation_FrequencyTabuSearch(nom,stable, lesPTA, nb_tp_a,lesSecteurA, nb_secteur_a,tilt_delta,delta_power, indiceMin);
 

@@ -173,6 +173,7 @@ cout << "ssd" << endl;
 
 void site::load_sites_file_freqaleatoire(char* file_name)
 {
+    //USE main.cpp l. 132
    // insérer la procédure ici (Projet AG41)
 
        GInputFile infile(file_name) ;

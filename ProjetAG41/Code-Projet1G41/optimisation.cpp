@@ -144,6 +144,50 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 										 pointTest** lesPTA, int nb_tp_a,
 										 secteur** lesSecteurA, int nb_secteur_a, int no_scen){
 
+	//USE main.cpp l. 160
+
+
+    cout<<endl<<endl<<endl<<endl;
+    cout<<"--------------------------"<<endl<<endl;
+    cout<<"Paramètre de la fonction : "<<endl<<endl;
+
+    cout<<"nom : "<<nom<<endl;
+    cout<<"stable : "<<stable<<endl;
+    cout<<"nb_tp_a : "<<nb_tp_a<<endl;
+    cout<<"nb_secteur_a : "<<nb_secteur_a<<endl;
+    cout<<"no_scen : "<<no_scen<<endl;
+
+    cout<<endl<<"--------------------------"<<endl;
+    cout<<endl<<"--------------------------"<<endl;
+    cout<<"DEBUT ALGO (copie du modele)"<<endl;
+
+
+    GOutputFile file_sortie(nom);
+	file_sortie.open();
+    file_sortie << "Optimisation robuste des fréquences" << "\n";
+    file_sortie << "les parametres de l optimisation" << "\n";
+    file_sortie <<"12h15"<< "\n";
+    file_sortie << "facteur de stabilite= " << stable << "\n";
+    file_sortie << "le critere est: le nombre de clients non couverts"<< "\n";
+	double nb_clients_non_couvert = 0.0;
+	double best_nb_clients_non_couvert = Fitness::eval(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen);
+	double best_nb_clients_non_couvert2 = best_nb_clients_non_couvert+1;
+    int nbIteration = 0;
+
+    cout<<"best_nb_clients_non_couvert : "<< best_nb_clients_non_couvert<<endl;
+
+    cout<<endl<<"--------------------------"<<endl;
+    cout<<endl<<"--------------------------"<<endl;
+
+    cout<<"Deroulement de l'ago ?"<<endl;
+
+
+
+    file_sortie.close();
+    cout<<endl<<"--------------------------"<<endl;
+
+
+    cout<<endl<<endl<<endl<<endl;
 
 }
 
