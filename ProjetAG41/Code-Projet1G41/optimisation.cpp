@@ -140,11 +140,23 @@ void find_closest_site(int num_site, int nb, Table_sites* &closest_sites){
 }
 
 ///Implémentez votre méthode ici
+/** nom = nom du fichier de sortie
+*   stable = on y touche pas. variable de stabilisation de l'affectation d'une
+*   antenne à un point test
+*   lesPTA = liste de tous les pts test actifs (actif = au moins un client dans le point test
+*   nb_tp_a = nombre de pts test actifs
+*   lesSecteurA = lste des secteurs comportant au moins un point test actif
+*   nb_secteur_a = nombre de secteurs actifs
+*   no_scen = le numéro du scénario on n'y touche pas.
+*/
 void optimisation::frequencyOptimization(char *nom, int stable,
 										 pointTest** lesPTA, int nb_tp_a,
 										 secteur** lesSecteurA, int nb_secteur_a, int no_scen){
 
 	//USE main.cpp l. 160
+
+    // UTILE secteur::getporteuse() et secteur::getsite()
+
 
 
     cout<<endl<<endl<<endl<<endl;
@@ -160,6 +172,7 @@ void optimisation::frequencyOptimization(char *nom, int stable,
     cout<<endl<<"--------------------------"<<endl;
     cout<<endl<<"--------------------------"<<endl;
     cout<<"DEBUT ALGO (copie du modele)"<<endl;
+
 
 
     GOutputFile file_sortie(nom);
@@ -190,30 +203,3 @@ void optimisation::frequencyOptimization(char *nom, int stable,
     cout<<endl<<endl<<endl<<endl;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1478,3 +1478,143 @@
 	"site.h"
 	"secteur.h"
 
+1370610127 source:c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\antenne.cpp
+	"antenne.h"
+
+1370610127 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\antenne.h
+	<iostream>
+	"unite.h"
+	"math_base.h"
+	"environement.h"
+
+1370610137 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\unite.h
+	<math.h>
+
+1370610136 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\math_base.h
+	<stdlib.h>
+	<math.h>
+
+1370610133 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\environement.h
+	"gfile.h"
+
+1370610133 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\gfile.h
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<vector>
+	<string>
+	<fstream>
+
+1370610133 source:c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\gfile.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<sstream>
+	<iostream>
+	"gfile.h"
+
+1370610136 source:c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\main.cpp
+	<iostream>
+	<fstream>
+	<time.h>
+	<limits>
+	"pointTest.h"
+	"site.h"
+	"secteur.h"
+	"random.h"
+	"math_base.h"
+	"propagation.h"
+	"unite.h"
+	"version.h"
+	"fitness.h"
+	"optimisation.h"
+	"Optimaleatoire.h"
+	"gfile.h"
+	"SolFrequence.h"
+
+1370610137 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\pointtest.h
+	<iostream>
+	<fstream>
+	<vector>
+	<string.h>
+	"site.h"
+	"environement.h"
+	"random.h"
+	"gfile.h"
+
+1370610137 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\site.h
+	<iostream>
+	<vector>
+	<string.h>
+	"gfile.h"
+	"pointTest.h"
+
+1370610137 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\random.h
+	<stdlib.h>
+	<time.h>
+
+1370610137 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\secteur.h
+	<math.h>
+	<iostream>
+	<vector>
+	"antenne.h"
+	"environement.h"
+
+1370610137 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\propagation.h
+	<stdlib.h>
+	"secteur.h"
+	"pointTest.h"
+	"math_base.h"
+
+1370610137 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\version.h
+
+1370610133 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\fitness.h
+	<stdlib.h>
+	<limits.h>
+	"pointTest.h"
+	"secteur.h"
+
+1370610136 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\optimisation.h
+	<stdlib.h>
+	<limits.h>
+	<vector>
+	"pointTest.h"
+	"secteur.h"
+	"fitness.h"
+	"Random.h"
+	"site.h"
+	"environement.h"
+
+1370610127 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\optimaleatoire.h
+	<stdlib.h>
+	<limits.h>
+	<string.h>
+	"pointTest.h"
+	"secteur.h"
+	"fitness.h"
+	"site.h"
+	"environement.h"
+
+1370610127 c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\solfrequence.h
+
+1370610137 source:c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\pointtest.cpp
+	"pointTest.h"
+	"propagation.h"
+	"secteur.h"
+
+1370610137 source:c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\secteur.cpp
+	"secteur.h"
+	"site.h"
+	"pointTest.h"
+
+1370610137 source:c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\site.cpp
+	"site.h"
+	"secteur.h"
+
+1370610127 source:c:\users\tg\documents\github\agriculturegastronomique41\projetag41\code-projet1g41\optimaleatoire.cpp
+	<time.h>
+	"Optimaleatoire.h"
+	"random.h"
+	"fitness.h"
+
