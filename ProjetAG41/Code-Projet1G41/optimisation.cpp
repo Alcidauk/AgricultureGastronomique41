@@ -109,14 +109,68 @@ struct TabuItem{
     int dureeTabu;
     };
 
+
+struct ListeTabuItems{
+    ListeTabuItems():ListeItems(NULL),nbItems(0){}
+    TabuItem** ListeItems;
+    int nbItems;
+    };
+
+void add_Item_ListeTabuItems(ListeTabuItems* liste,int no_site,int dureeTabu){
+    if(liste->nbItems == 0){
+        liste->ListeItems = new TabuItem*[1];
+        liste->nbItems = 1;
+    }
+    else{
+        TabuItem** tmpListe = new TabuItem*[liste->nbItems + 1];
+        for(int i=0; i<liste->nbItems; i++)
+            tmpListe[i] = liste->ListeItems[i];
+        liste->nbItems++;
+        delete liste->ListeItems;
+        liste->ListeItems = tmpListe;
+    }
+    TabuItem* item = new TabuItem();
+    item->no_site = no_site;
+    item->dureeTabu = dureeTabu;
+    liste->ListeItems[liste->nbItems - 1] = item;
+}
+
+void update_Items_ListeTabuItems(ListeTabuItems* liste){
+    int new_nbItems=0;
+    for(int i=0; i<liste->nbItems;i++){
+        if(liste->ListeItems[i]->dureeTabu != 0) new_nbItems ++;
+    }
+    TabuItem** tmpListe = new TabuItem*[new_nbItems];
+    TabuItem* item = NULL;
+    int index=0;
+    for(int i=0; i<liste->nbItems;i++){
+        if(liste->ListeItems[i]->dureeTabu != 0){
+            item = new TabuItem();
+            item->no_site = liste->ListeItems[i]->no_site;
+            item->dureeTabu = liste->ListeItems[i]->dureeTabu - 1;
+            tmpListe[index] = item;
+            index++;
+        }
+    }
+    liste->nbItems = new_nbItems;
+    delete liste->ListeItems;
+    liste->ListeItems = tmpListe;
+}
+
+void delete_ListeTabuItems(ListeTabuItems* liste){
+    for(int i=0; i<liste->nbItems;i++)
+        delete liste->ListeItems[i];
+    delete liste;
+}
+
+
 typedef struct Table_sites {
 	Table_sites():no_site(-1),dist_site_m(INFINITY){}
 	int no_site;
 	double dist_site_m;
     };
 
-    /// Recherches les nb sites les plus proches dun site donné
-
+/// Recherches les nb sites les plus proches dun site donné
 void find_closest_site(int num_site, int nb, Table_sites* &closest_sites){
     int nb_closest_site = nb;
     //Table_sites* closest_sites;
@@ -138,6 +192,7 @@ void find_closest_site(int num_site, int nb, Table_sites* &closest_sites){
         }
     }
 }
+
 
 ///Implémentez votre méthode ici
 /** nom = nom du fichier de sortie
@@ -194,8 +249,18 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 
     cout<<"Deroulement de l'ago ?"<<endl;
 
+    ListeTabuItems* listeTabu = new ListeTabuItems();
 
+    /*
+    while(Fitness::eval(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen); != 0)
+    {
+        update_Items_ListeTabuItems(listeTabu);
 
+        // DO SOMETHING
+    }
+    */
+
+    delete_ListeTabuItems(listeTabu);
     file_sortie.close();
     cout<<endl<<"--------------------------"<<endl;
 
