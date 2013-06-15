@@ -193,6 +193,23 @@ void find_closest_site(int num_site, int nb, Table_sites* &closest_sites){
     }
 }
 
+void find_secteur_from_site(int no_site,secteur** lesSecteurA, int nb_secteur_a,secteur** &secteurs)
+{
+    if(secteurs)delete secteurs;
+    secteurs = new secteur*[3];
+    int index_secteur = 0;
+    for(int i=0; i<nb_secteur_a;i++)
+    {
+        if(index_secteur == 3)break;
+        if(lesSecteurA[i]->get_site()->get_no() == no_site)
+        {
+            secteurs[index_secteur] = lesSecteurA[i];
+            index_secteur++;
+        }
+    }
+}
+
+
 
 ///Implémentez votre méthode ici
 /** nom = nom du fichier de sortie
@@ -209,10 +226,7 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 										 secteur** lesSecteurA, int nb_secteur_a, int no_scen){
 
 	//USE main.cpp l. 160
-
     // UTILE secteur::getporteuse() et secteur::getsite()
-
-
 
     cout<<endl<<endl<<endl<<endl;
     cout<<"--------------------------"<<endl<<endl;
@@ -242,24 +256,34 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 	double best_nb_clients_non_couvert2 = best_nb_clients_non_couvert+1;
     int nbIteration = 0;
 
+
+    ListeTabuItems* listeTabu = new ListeTabuItems();
+    Table_sites* voisin = NULL;
+
     cout<<"best_nb_clients_non_couvert : "<< best_nb_clients_non_couvert<<endl;
 
     cout<<endl<<"--------------------------"<<endl;
     cout<<endl<<"--------------------------"<<endl;
 
-    cout<<"Deroulement de l'ago ?"<<endl;
+    cout<<"Deroulement de l'algo :"<<endl<<endl;
+    int NB_VOISIN = 1 ;cout<<"nombre de voisin(s)  :  "<<NB_VOISIN<<endl;
+    int INDEX_SITE = lesSecteurA[0]->get_site()->get_no();
 
-    ListeTabuItems* listeTabu = new ListeTabuItems();
-
-    /*
-    while(Fitness::eval(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen); != 0)
+    secteur** secteurs = NULL;
+    find_closest_site(INDEX_SITE,NB_VOISIN,voisin);
+    for(int i=0; i<NB_VOISIN; i++)
     {
-        update_Items_ListeTabuItems(listeTabu);
+        cout<<"voisin "<<i+1<<" :\t"<<"num:"<<voisin[i].no_site<<"\tdistance:"<<voisin[i].dist_site_m<<endl;
 
-        // DO SOMETHING
+        find_secteur_from_site(voisin[i].no_site,lesSecteurA,nb_secteur_a,secteurs);
+        for(int j=0;j<3; j++)
+        {cout<<"\t\t ("<<secteurs[j]->get_no()<<")  :  "<<secteurs[j]->get_porteuse()<<endl;}
+
+
+
     }
-    */
 
+    delete secteurs;
     delete_ListeTabuItems(listeTabu);
     file_sortie.close();
     cout<<endl<<"--------------------------"<<endl;
