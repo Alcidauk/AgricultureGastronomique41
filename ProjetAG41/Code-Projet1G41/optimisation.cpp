@@ -198,9 +198,11 @@ void find_secteur_from_site(int no_site,secteur** lesSecteurA, int nb_secteur_a,
     if(secteurs)delete secteurs;
     secteurs = new secteur*[3];
     int index_secteur = 0;
+
     for(int i=0; i<nb_secteur_a;i++)
     {
         if(index_secteur == 3)break;
+
         if(lesSecteurA[i]->get_site()->get_no() == no_site)
         {
             secteurs[index_secteur] = lesSecteurA[i];
@@ -259,6 +261,8 @@ void optimisation::frequencyOptimization(char *nom, int stable,
     ListeTabuItems* listeTabu = new ListeTabuItems();
     Table_sites* voisin = NULL;
 
+    cout << "Nombre de secteurs actifs: " << nb_secteur_a << endl;
+
     // nombre d'itérations avant d'arrêter l'algo. Un autre critère plus efficace pourrait être choisi ?!
     // par ex si fitness n'évolue plus.
     for( nbIteration; nbIteration < 2; nbIteration++){
@@ -271,8 +275,9 @@ void optimisation::frequencyOptimization(char *nom, int stable,
         cout<<"Deroulement de l'algo :"<<endl<<endl;
 
         // on teste le changement pour chaque secteur actif pour après choisir le meilleur changement.
-        //for( int sect = 0; sect < nb_secteur_a; sect++){
-        for( int sect = 0; sect < 2; sect++){
+        for( int sect = 0; sect < nb_secteur_a; sect++){
+
+        //for( int sect = 0; sect < 2; sect++){
 
             cout << "Secteur actif num: " << sect << endl;
             int NB_VOISIN = 1 ;cout<<"nombre de voisin(s)  :  "<<NB_VOISIN<<endl;
@@ -286,7 +291,7 @@ void optimisation::frequencyOptimization(char *nom, int stable,
                 cout<<"voisin "<<i+1<<" :\t"<<"num:"<<voisin[i].no_site<<"\tdistance:"<<voisin[i].dist_site_m<<endl;
 
                 find_secteur_from_site(voisin[i].no_site,lesSecteurA,nb_secteur_a,secteurs);
-                for(int j=0;j<3; j++){
+                for(int j=0;j<1; j++){
                     cout <<"\t\t ("<<secteurs[j]->get_no();
                     cout <<")  :  "<<secteurs[j]->get_porteuse()<<endl;
                 }
@@ -299,6 +304,64 @@ void optimisation::frequencyOptimization(char *nom, int stable,
         }
 
     }
+
+
+/*
+        // nombre d'itérations avant d'arrêter l'algo. Un autre critère plus efficace pourrait être choisi ?!
+    // par ex si fitness n'évolue plus.
+    for( nbIteration; nbIteration < 2; nbIteration++){
+
+        cout<<"best_nb_clients_non_couvert : "<< best_nb_clients_non_couvert<<endl;
+
+        cout<<endl<<"--------------------------"<<endl;
+        cout<<endl<<"--------------------------"<<endl;
+
+        cout<<"Deroulement de l'algo :"<<endl<<endl;
+
+        //enregistrement des sites déjà permutés
+        int sites_visites[nb_secteur_a/3];
+        for( int site=0; site < nb_secteur_a/3; site++){
+                sites_visites[site] = 0;
+        }
+
+
+        // on teste le changement pour chaque secteur actif pour après choisir le meilleur changement.
+        for( int sect = 0; sect < nb_secteur_a; sect++){
+
+            secteur** secteurs = NULL;
+
+            cout << "Secteur actif num: " << sect << endl;
+
+            int ind_site = lesSecteurA[sect]->get_site()->get_no();
+
+            find_secteur_from_site(ind_site,lesSecteurA,nb_secteur_a,secteurs);
+
+            // affichage des porteuses actuelles
+            for(int j=0;j<3; j++){
+                cout <<"\t\t ("<<secteurs[j]->get_no();
+                cout <<")  :  "<<secteurs[j]->get_porteuse()<<endl;
+            }
+
+            //passage au voisin  si pas déjà testé cette permutation
+            if( sites_visites[ind_site] == 0 ){
+                int port_1 = secteurs[0]->get_porteuse();
+                secteurs[0]->set_porteuse(secteurs[2]->get_porteuse());
+                secteurs[2]->set_porteuse(secteurs[1]->get_porteuse());
+                secteurs[1]->set_porteuse(port_1);
+            }
+
+            secteur** lesSecteurAnew = new secteur*(*lesSecteurA);
+            //cout << lesSecteurAnew << lesSecteurA;
+
+            sites_visites[ind_site] = 1;
+
+            delete secteurs;
+
+        }
+
+    }
+    */
+
 
 
     delete_ListeTabuItems(listeTabu);
