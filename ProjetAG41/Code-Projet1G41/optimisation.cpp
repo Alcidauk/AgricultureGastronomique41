@@ -247,43 +247,60 @@ void optimisation::frequencyOptimization(char *nom, int stable,
     GOutputFile file_sortie(nom);
 	file_sortie.open();
     file_sortie << "Optimisation robuste des fréquences" << "\n";
-    file_sortie << "les parametres de l optimisation" << "\n";
+    file_sortie << "les parametres de l'optimisation" << "\n";
     file_sortie <<"12h15"<< "\n";
     file_sortie << "facteur de stabilite= " << stable << "\n";
-    file_sortie << "le critere est: le nombre de clients non couverts"<< "\n";
+    file_sortie << "le critere est le nombre de clients non couverts"<< "\n";
 	double nb_clients_non_couvert = 0.0;
 	double best_nb_clients_non_couvert = Fitness::eval(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen);
 	double best_nb_clients_non_couvert2 = best_nb_clients_non_couvert+1;
     int nbIteration = 0;
 
-
     ListeTabuItems* listeTabu = new ListeTabuItems();
     Table_sites* voisin = NULL;
 
-    cout<<"best_nb_clients_non_couvert : "<< best_nb_clients_non_couvert<<endl;
+    // nombre d'itérations avant d'arrêter l'algo. Un autre critère plus efficace pourrait être choisi ?!
+    // par ex si fitness n'évolue plus.
+    for( nbIteration; nbIteration < 2; nbIteration++){
 
-    cout<<endl<<"--------------------------"<<endl;
-    cout<<endl<<"--------------------------"<<endl;
+        cout<<"best_nb_clients_non_couvert : "<< best_nb_clients_non_couvert<<endl;
 
-    cout<<"Deroulement de l'algo :"<<endl<<endl;
-    int NB_VOISIN = 1 ;cout<<"nombre de voisin(s)  :  "<<NB_VOISIN<<endl;
-    int INDEX_SITE = lesSecteurA[0]->get_site()->get_no();
+        cout<<endl<<"--------------------------"<<endl;
+        cout<<endl<<"--------------------------"<<endl;
 
-    secteur** secteurs = NULL;
-    find_closest_site(INDEX_SITE,NB_VOISIN,voisin);
-    for(int i=0; i<NB_VOISIN; i++)
-    {
-        cout<<"voisin "<<i+1<<" :\t"<<"num:"<<voisin[i].no_site<<"\tdistance:"<<voisin[i].dist_site_m<<endl;
+        cout<<"Deroulement de l'algo :"<<endl<<endl;
 
-        find_secteur_from_site(voisin[i].no_site,lesSecteurA,nb_secteur_a,secteurs);
-        for(int j=0;j<3; j++)
-        {cout<<"\t\t ("<<secteurs[j]->get_no()<<")  :  "<<secteurs[j]->get_porteuse()<<endl;}
+        // on teste le changement pour chaque secteur actif pour après choisir le meilleur changement.
+        //for( int sect = 0; sect < nb_secteur_a; sect++){
+        for( int sect = 0; sect < 2; sect++){
+
+            cout << "Secteur actif num: " << sect << endl;
+            int NB_VOISIN = 1 ;cout<<"nombre de voisin(s)  :  "<<NB_VOISIN<<endl;
+            int INDEX_SITE = lesSecteurA[sect]->get_site()->get_no();
+
+            secteur** secteurs = NULL;
+            find_closest_site(INDEX_SITE,NB_VOISIN,voisin);
+
+            for(int i=0; i<NB_VOISIN; i++)
+            {
+                cout<<"voisin "<<i+1<<" :\t"<<"num:"<<voisin[i].no_site<<"\tdistance:"<<voisin[i].dist_site_m<<endl;
+
+                find_secteur_from_site(voisin[i].no_site,lesSecteurA,nb_secteur_a,secteurs);
+                for(int j=0;j<3; j++){
+                    cout <<"\t\t ("<<secteurs[j]->get_no();
+                    cout <<")  :  "<<secteurs[j]->get_porteuse()<<endl;
+                }
 
 
+            }
+
+            delete secteurs;
+
+        }
 
     }
 
-    delete secteurs;
+
     delete_ListeTabuItems(listeTabu);
     file_sortie.close();
     cout<<endl<<"--------------------------"<<endl;
