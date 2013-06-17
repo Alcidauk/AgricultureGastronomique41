@@ -376,9 +376,7 @@ void optimisation::frequencyOptimization(char *nom, int stable,
             secteurs[index2]->set_porteuse(porteuse);
         }
 
-        cout << "Fitness tour  "<<++iteration<<"  :  "<< BEST_FITNESS << endl;
-
-        cout << "Mise à jour de la liste taBibliothèqueUniversitaire" << endl;
+        cout << "Fitness tour  "<<iteration<<"  :  "<< BEST_FITNESS << endl;
 
         int* conf = new int[nb_secteur_a];
 
