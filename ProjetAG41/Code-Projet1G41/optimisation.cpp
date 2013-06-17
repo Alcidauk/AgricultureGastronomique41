@@ -207,12 +207,19 @@ void find_secteur_from_site(int no_site,secteur** lesSecteurA, int nb_secteur_a,
             index_secteur++;
         }
     }
+    for(index_secteur; index_secteur<3; index_secteur++)
+            secteurs[index_secteur]= NULL;
 }
 
 double test_permutation(int stable,pointTest** lesPTA,int nb_tp_a,
                         secteur** &lesSecteurA,int nb_secteur_a,int no_scen,
                         secteur** &secteurs,int index1,int index2)
 {
+    if(secteurs[index1] == NULL || secteurs[index2] == NULL)
+        return 0;
+
+
+
     int porteuse;
 
     porteuse = secteurs[index1]->get_porteuse();
@@ -270,14 +277,14 @@ void optimisation::frequencyOptimization(char *nom, int stable,
     int nbIteration = 0;
     cout<<endl<<"--------------------------"<<endl;
 
-    cout << "Fitness initiale: " << nb_clients_non_couvert << endl;
+    cout << "Fitness initiale: " << best_nb_clients_non_couvert << endl;
 
     cout << "Nombre de secteurs actifs: " << nb_secteur_a << endl;
 
 
     ListeTabuItems* listeTabu = new ListeTabuItems();
     Table_sites* voisin = NULL;
-    int NB_ITERATION = 64;
+    int NB_ITERATION = 1;
 
     int BEST_SITE = -1;     // pas de changement
     int BEST_PERM = 0;     // pas de permutation
@@ -290,16 +297,17 @@ void optimisation::frequencyOptimization(char *nom, int stable,
     int porteuse;
     double fitness_tmp;
     int index1,index2;
-    int iteration = 0;
 
-    while(BEST_PERM != -1)
+    for(int iteration=0; iteration<NB_ITERATION;iteration++ )
     {
+        cout<<endl<<endl;
         //On nettoie la liste des passages
         for( int site=0; site < nb_secteur_a/3; site++)sites_visites[site] = 0;
         BEST_SITE = -1;BEST_PERM = -1;
 
         //Pour chaque secteur
-        for(int no_secteur=0; no_secteur<nb_secteur_a; no_secteur++)
+        int no_secteur=0;
+        for(no_secteur; no_secteur<nb_secteur_a; no_secteur++)
         {
             no_site = lesSecteurA[no_secteur]->get_site()->get_no();
             //Si le site n'as pas encore été visité
@@ -308,23 +316,33 @@ void optimisation::frequencyOptimization(char *nom, int stable,
                 //on récupère les secteurs du site
                 find_secteur_from_site(no_site,lesSecteurA,nb_secteur_a,secteurs);
                 //On récupère l'état du site
-                for(int i=0;i<3;i++)etat_site[i] = secteurs[i]->get_porteuse();
+                for(int i=0;i<3;i++)
+                {
+                    if(secteurs[i] == NULL) etat_site[i] = -1;
+                    else etat_site[i] = secteurs[i]->get_porteuse();
+                }
 
                 //ESSAI permutation (1)       secteurs[0] <-> secteurs[1]
                 fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,0,1);
-                if(fitness_tmp > BEST_FITNESS)
+                if(fitness_tmp >= BEST_FITNESS)
                 {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 1;}
                 //ESSAI permutation (2)       secteurs[1] <-> secteurs[2]
                 fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,1,2);
-                if(fitness_tmp > BEST_FITNESS)
+                if(fitness_tmp >= BEST_FITNESS)
                 {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 2;}
                 //ESSAI permutation (3)       secteurs[0] <-> secteurs[2]
                 fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,0,2);
-                if(fitness_tmp > BEST_FITNESS)
+                if(fitness_tmp >= BEST_FITNESS)
                 {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 3;}
 
+
                 //On rétablie les valeurs d'origine du site
-                for(int i=0;i<3;i++) secteurs[i]->set_porteuse(etat_site[i]);
+                for(int i=0;i<3;i++)
+                {
+                    if(secteurs[i] != NULL)
+                    {secteurs[i]->set_porteuse(etat_site[i]);}
+                }
+
                 sites_visites[no_site] = 1;
             }
         }

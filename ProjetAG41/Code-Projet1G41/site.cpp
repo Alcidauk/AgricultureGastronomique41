@@ -244,9 +244,6 @@ void site::load_sites_file_freqaleatoire(char* file_name)
             // création d'un nouveau secteur
             if(tableFreq)delete tableFreq;
             tableFreq = randomizeTableFreq();
-            cout<<endl<<endl;
-            for(int i=0; i<3; i++)cout<<tableFreq[i]<<" ";
-                        cout<<endl<<endl;
             no_sect = 0;
             type_antenne = 1; // antenne directive
             if (patern==1) _porteurse = 0; //schema 1x3x1
