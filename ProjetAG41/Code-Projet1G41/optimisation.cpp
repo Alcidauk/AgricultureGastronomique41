@@ -195,8 +195,6 @@ void find_closest_site(int num_site, int nb, Table_sites* &closest_sites){
 
 void find_secteur_from_site(int no_site,secteur** lesSecteurA, int nb_secteur_a,secteur** &secteurs)
 {
-    if(secteurs)delete secteurs;
-    secteurs = new secteur*[3];
     int index_secteur = 0;
 
     for(int i=0; i<nb_secteur_a;i++)
@@ -209,6 +207,25 @@ void find_secteur_from_site(int no_site,secteur** lesSecteurA, int nb_secteur_a,
             index_secteur++;
         }
     }
+}
+
+double test_permutation(int stable,pointTest** lesPTA,int nb_tp_a,
+                        secteur** &lesSecteurA,int nb_secteur_a,int no_scen,
+                        secteur** &secteurs,int index1,int index2)
+{
+    int porteuse;
+
+    porteuse = secteurs[index1]->get_porteuse();
+    secteurs[index1]->set_porteuse(secteurs[index2]->get_porteuse());
+    secteurs[index2]->set_porteuse(porteuse);
+
+    double result = Fitness::eval(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen);
+
+    porteuse = secteurs[index1]->get_porteuse();
+    secteurs[index1]->set_porteuse(secteurs[index2]->get_porteuse());
+    secteurs[index2]->set_porteuse(porteuse);
+
+    return result;
 }
 
 
@@ -240,12 +257,6 @@ void optimisation::frequencyOptimization(char *nom, int stable,
     cout<<"nb_secteur_a : "<<nb_secteur_a<<endl;
     cout<<"no_scen : "<<no_scen<<endl;
 
-    cout<<endl<<"--------------------------"<<endl;
-    cout<<endl<<"--------------------------"<<endl;
-    cout<<"DEBUT ALGO (copie du modele)"<<endl;
-
-
-
     GOutputFile file_sortie(nom);
 	file_sortie.open();
     file_sortie << "Optimisation robuste des fréquences" << "\n";
@@ -257,72 +268,94 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 	double best_nb_clients_non_couvert = Fitness::eval(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen);
 	double best_nb_clients_non_couvert2 = best_nb_clients_non_couvert+1;
     int nbIteration = 0;
+    cout<<endl<<"--------------------------"<<endl;
 
-    ListeTabuItems* listeTabu = new ListeTabuItems();
-    Table_sites* voisin = NULL;
+    cout << "Fitness initiale: " << nb_clients_non_couvert << endl;
 
     cout << "Nombre de secteurs actifs: " << nb_secteur_a << endl;
 
-        // nombre d'itérations avant d'arrêter l'algo. Un autre critère plus efficace pourrait être choisi ?!
-    // par ex si fitness n'évolue plus.
-    for( nbIteration; nbIteration < 2; nbIteration++){
 
-        cout<<"best_nb_clients_non_couvert : "<< best_nb_clients_non_couvert<<endl;
+    ListeTabuItems* listeTabu = new ListeTabuItems();
+    Table_sites* voisin = NULL;
+    int NB_ITERATION = 64;
 
-        cout<<endl<<"--------------------------"<<endl;
-        cout<<endl<<"--------------------------"<<endl;
+    int BEST_SITE = -1;     // pas de changement
+    int BEST_PERM = 0;     // pas de permutation
+    int BEST_FITNESS = best_nb_clients_non_couvert;
 
-        cout<<"Deroulement de l'algo :"<<endl<<endl;
+    int* sites_visites = new int[nb_secteur_a/3];
+    int no_site = -1;
+    int* etat_site = new int[3];
+    secteur** secteurs = new secteur*[3];
+    int porteuse;
+    double fitness_tmp;
+    int index1,index2;
+    int iteration = 0;
 
-        //enregistrement des sites déjà permutés
-        int sites_visites[nb_secteur_a/3];
-        for( int site=0; site < nb_secteur_a/3; site++){
-                sites_visites[site] = 0;
+    while(BEST_PERM != -1)
+    {
+        //On nettoie la liste des passages
+        for( int site=0; site < nb_secteur_a/3; site++)sites_visites[site] = 0;
+        BEST_SITE = -1;BEST_PERM = -1;
+
+        //Pour chaque secteur
+        for(int no_secteur=0; no_secteur<nb_secteur_a; no_secteur++)
+        {
+            no_site = lesSecteurA[no_secteur]->get_site()->get_no();
+            //Si le site n'as pas encore été visité
+            if(sites_visites[no_site] == 0)
+            {
+                //on récupère les secteurs du site
+                find_secteur_from_site(no_site,lesSecteurA,nb_secteur_a,secteurs);
+                //On récupère l'état du site
+                for(int i=0;i<3;i++)etat_site[i] = secteurs[i]->get_porteuse();
+
+                //ESSAI permutation (1)       secteurs[0] <-> secteurs[1]
+                fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,0,1);
+                if(fitness_tmp > BEST_FITNESS)
+                {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 1;}
+                //ESSAI permutation (2)       secteurs[1] <-> secteurs[2]
+                fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,1,2);
+                if(fitness_tmp > BEST_FITNESS)
+                {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 2;}
+                //ESSAI permutation (3)       secteurs[0] <-> secteurs[2]
+                fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,0,2);
+                if(fitness_tmp > BEST_FITNESS)
+                {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 3;}
+
+                //On rétablie les valeurs d'origine du site
+                for(int i=0;i<3;i++) secteurs[i]->set_porteuse(etat_site[i]);
+                sites_visites[no_site] = 1;
+            }
         }
 
+        //Si on a trouver une meilleur permutation on la fait
+        if(BEST_PERM != -1)
+        {
+            find_secteur_from_site(BEST_SITE,lesSecteurA,nb_secteur_a,secteurs);
 
-        // on teste le changement pour chaque secteur actif pour après choisir le meilleur changement.
-        for( int sect = 0; sect < nb_secteur_a; sect++){
-
-            secteur** secteurs = NULL;
-
-            cout << "Secteur actif num: " << sect << endl;
-
-            int ind_site = lesSecteurA[sect]->get_site()->get_no();
-
-            find_secteur_from_site(ind_site,lesSecteurA,nb_secteur_a,secteurs);
-
-            // affichage des porteuses actuelles
-            for(int j=0;j<3; j++){
-                cout <<"\t\t ("<<secteurs[j]->get_no();
-                cout <<")  :  "<<secteurs[j]->get_porteuse()<<endl;
-            }
-
-            //passage au voisin  si pas déjà testé cette permutation
-            if( sites_visites[ind_site] == 0 ){
-                int port_1 = secteurs[0]->get_porteuse();
-                secteurs[0]->set_porteuse(secteurs[2]->get_porteuse());
-                secteurs[2]->set_porteuse(secteurs[1]->get_porteuse());
-                secteurs[1]->set_porteuse(port_1);
-            }
-
-            secteur** lesSecteurAnew = new secteur*(*lesSecteurA);
-            //cout << lesSecteurAnew << lesSecteurA;
-
-            sites_visites[ind_site] = 1;
-
-            delete secteurs;
-
+            if(BEST_PERM == 1){index1=0;index2=1;}
+            if(BEST_PERM == 2){index1=1;index2=2;}
+            if(BEST_PERM == 3){index1=0;index2=2;}
+            porteuse = secteurs[index1]->get_porteuse();
+            secteurs[index1]->set_porteuse(secteurs[index2]->get_porteuse());
+            secteurs[index2]->set_porteuse(porteuse);
         }
 
+        cout << "Fitness tour  "<<++iteration<<"  :  "<< BEST_FITNESS << endl;
     }
 
 
+
+    delete secteurs;
+    delete etat_site;
+    delete sites_visites;
     delete_ListeTabuItems(listeTabu);
-    file_sortie.close();
+
+
     cout<<endl<<"--------------------------"<<endl;
-
-
     cout<<endl<<endl<<endl<<endl;
+
+    file_sortie.close();
 
 }
