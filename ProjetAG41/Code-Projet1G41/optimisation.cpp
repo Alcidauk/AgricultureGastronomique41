@@ -105,7 +105,7 @@ void optimisation::descente_simple_frequence(char* nom, int stable,
 //Le liste tabou contenant le meilleur site voisins et la duree qui lui correspond
 struct TabuItem{
     TabuItem():conf(NULL),dureeTabu(0){}
-    int** conf;
+    int* conf;
     int conf_taille;
     int dureeTabu;
 };
@@ -117,7 +117,7 @@ struct ListeTabuItems{
     int nbItems;
 };
 
-void add_Item_ListeTabuItems(ListeTabuItems* liste,int** conf, int conf_taille, int dureeTabu){
+void add_Item_ListeTabuItems(ListeTabuItems* liste,int* conf, int dureeTabu){
     if(liste->nbItems == 0){
         liste->ListeItems = new TabuItem*[1];
         liste->nbItems = 1;
@@ -131,10 +131,7 @@ void add_Item_ListeTabuItems(ListeTabuItems* liste,int** conf, int conf_taille, 
         liste->ListeItems = tmpListe;
     }
     TabuItem* item = new TabuItem();
-    item->conf = new int*[conf_taille];
-    for( int i=0; i < conf_taille; i++){
-        item->conf[i] = conf[i];
-    }
+    item->conf = conf;
     item->dureeTabu = dureeTabu;
     liste->ListeItems[liste->nbItems - 1] = item;
 }
@@ -162,9 +159,6 @@ void update_Items_ListeTabuItems(ListeTabuItems* liste){
 }
 
 void delete_item(TabuItem* item){
-    for(int i=0; i < item->conf_taille; i++){
-        delete item->conf[i];
-    }
     delete item->conf;
     delete item;
 }
@@ -373,6 +367,21 @@ void optimisation::frequencyOptimization(char *nom, int stable,
         }
 
         cout << "Fitness tour  "<<++iteration<<"  :  "<< BEST_FITNESS << endl;
+
+        cout << "Mise à jour de la liste taBibliothèqueUniversitaire" << endl;
+
+        int* conf = new int[nb_secteur_a];
+
+        for(int i = 0; i < nb_secteur_a; i++){
+            conf[i] = lesSecteurA[i]->get_porteuse();
+        }
+
+        int dureeTabU = 5;
+
+        update_Items_ListeTabuItems(listeTabu);
+        add_Item_ListeTabuItems(listeTabu,conf,dureeTabU);
+
+
     }
 
 
