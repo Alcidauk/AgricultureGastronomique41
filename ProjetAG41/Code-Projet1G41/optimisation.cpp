@@ -104,19 +104,20 @@ void optimisation::descente_simple_frequence(char* nom, int stable,
 // Liste des sites voisins du site choisi
 //Le liste tabou contenant le meilleur site voisins et la duree qui lui correspond
 struct TabuItem{
-    TabuItem():no_site(-1),dureeTabu(0){}
-    int no_site;
+    TabuItem():conf(NULL),dureeTabu(0){}
+    int** conf;
+    int conf_taille;
     int dureeTabu;
-    };
+};
 
 
 struct ListeTabuItems{
     ListeTabuItems():ListeItems(NULL),nbItems(0){}
     TabuItem** ListeItems;
     int nbItems;
-    };
+};
 
-void add_Item_ListeTabuItems(ListeTabuItems* liste,int no_site,int dureeTabu){
+void add_Item_ListeTabuItems(ListeTabuItems* liste,int** conf, int conf_taille, int dureeTabu){
     if(liste->nbItems == 0){
         liste->ListeItems = new TabuItem*[1];
         liste->nbItems = 1;
@@ -130,7 +131,10 @@ void add_Item_ListeTabuItems(ListeTabuItems* liste,int no_site,int dureeTabu){
         liste->ListeItems = tmpListe;
     }
     TabuItem* item = new TabuItem();
-    item->no_site = no_site;
+    item->conf = new int*[conf_taille];
+    for( int i=0; i < conf_taille; i++){
+        item->conf[i] = conf[i];
+    }
     item->dureeTabu = dureeTabu;
     liste->ListeItems[liste->nbItems - 1] = item;
 }
@@ -146,7 +150,7 @@ void update_Items_ListeTabuItems(ListeTabuItems* liste){
     for(int i=0; i<liste->nbItems;i++){
         if(liste->ListeItems[i]->dureeTabu != 0){
             item = new TabuItem();
-            item->no_site = liste->ListeItems[i]->no_site;
+            item->conf = liste->ListeItems[i]->conf;
             item->dureeTabu = liste->ListeItems[i]->dureeTabu - 1;
             tmpListe[index] = item;
             index++;
@@ -157,9 +161,17 @@ void update_Items_ListeTabuItems(ListeTabuItems* liste){
     liste->ListeItems = tmpListe;
 }
 
+void delete_item(TabuItem* item){
+    for(int i=0; i < item->conf_taille; i++){
+        delete item->conf[i];
+    }
+    delete item->conf;
+    delete item;
+}
+
 void delete_ListeTabuItems(ListeTabuItems* liste){
     for(int i=0; i<liste->nbItems;i++)
-        delete liste->ListeItems[i];
+        delete_item(liste->ListeItems[i]);
     delete liste;
 }
 

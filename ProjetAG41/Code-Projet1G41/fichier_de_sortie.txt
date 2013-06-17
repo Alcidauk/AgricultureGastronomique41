@@ -1354,3 +1354,48 @@ le critere est le nombre de clients non couverts
 <<<<<<<<<<<<<<
 resultats de sortie
 ------------------------------------------------------0-----------------------------------------------
+le nombre de clients tires1538
+Optimisation robuste des fréquences
+les parametres de l'optimisation
+12h15
+facteur de stabilite= 10
+le critere est le nombre de clients non couverts
+<<<<<<<<<<<<<<
+resultats de sortie
+------------------------------------------------------0-----------------------------------------------
+le nombre de clients tires1538
+Optimisation robuste des fréquences
+les parametres de l'optimisation
+12h15
+facteur de stabilite= 10
+le critere est le nombre de clients non couverts
+<<<<<<<<<<<<<<
+resultats de sortie
+------------------------------------------------------0-----------------------------------------------
+le nombre de clients tires1538
+Optimisation robuste des fréquences
+les parametres de l'optimisation
+12h15
+facteur de stabilite= 10
+le critere est le nombre de clients non couverts
+<<<<<<<<<<<<<<
+resultats de sortie
+------------------------------------------------------0-----------------------------------------------
+le nombre de clients tires1538
+Optimisation robuste des fréquences
+les parametres de l'optimisation
+12h15
+facteur de stabilite= 10
+le critere est le nombre de clients non couverts
+<<<<<<<<<<<<<<
+resultats de sortie
+------------------------------------------------------0-----------------------------------------------
+le nombre de clients tires1538
+Optimisation robuste des fréquences
+les parametres de l'optimisation
+12h15
+facteur de stabilite= 10
+le critere est le nombre de clients non couverts
+<<<<<<<<<<<<<<
+resultats de sortie
+------------------------------------------------------0-----------------------------------------------
