@@ -217,14 +217,34 @@ void find_secteur_from_site(int no_site,secteur** lesSecteurA, int nb_secteur_a,
             secteurs[index_secteur]= NULL;
 }
 
+bool test_egal_conf(int* conf1,int* conf2, int nb_secteur_a)
+{
+    for(int i=0; i<nb_secteur_a;i++)
+        if(conf1[i] != conf2[i])
+            return false;
+    return true;
+}
+
+bool test_is_in_tabu(int* &conf,int nb_secteur_a,ListeTabuItems* &listeTabu)
+{
+    for(int i=0; i<listeTabu->nbItems;i++)
+    {
+        if(test_egal_conf(conf,listeTabu->ListeItems[i]->conf,nb_secteur_a))
+            return true;
+    }
+    return false;
+}
+
 double test_permutation(int stable,pointTest** lesPTA,int nb_tp_a,
                         secteur** &lesSecteurA,int nb_secteur_a,int no_scen,
+                        ListeTabuItems* &listeTabu,
                         secteur** &secteurs,int index1,int index2)
 {
+
+    //return 99999 : pour dire que c'est une énorme fitness
+
     if(secteurs[index1] == NULL || secteurs[index2] == NULL)
         return 99999;
-
-
 
     int porteuse;
 
@@ -232,7 +252,15 @@ double test_permutation(int stable,pointTest** lesPTA,int nb_tp_a,
     secteurs[index1]->set_porteuse(secteurs[index2]->get_porteuse());
     secteurs[index2]->set_porteuse(porteuse);
 
-    double result = Fitness::eval(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen);
+    int* conf = new int[nb_secteur_a];
+    for(int i = 0; i < nb_secteur_a; i++){
+        conf[i] = lesSecteurA[i]->get_porteuse();
+    }
+    double result = 9999;
+    if(test_is_in_tabu(conf,nb_secteur_a,listeTabu) == false)
+       result = Fitness::eval(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen);
+    delete conf;
+
 
     porteuse = secteurs[index1]->get_porteuse();
     secteurs[index1]->set_porteuse(secteurs[index2]->get_porteuse());
@@ -339,15 +367,15 @@ void optimisation::frequencyOptimization(char *nom, int stable,
                 }
 
                 //ESSAI permutation (1)       secteurs[0] <-> secteurs[1]
-                fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,0,1);
+                fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,listeTabu,secteurs,0,1);
                 if(fitness_tmp <= BEST_FITNESS)
                 {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 1;}
                 //ESSAI permutation (2)       secteurs[1] <-> secteurs[2]
-                fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,1,2);
+                fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,listeTabu,secteurs,1,2);
                 if(fitness_tmp <= BEST_FITNESS)
                 {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 2;}
                 //ESSAI permutation (3)       secteurs[0] <-> secteurs[2]
-                fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,0,2);
+                fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,listeTabu,secteurs,0,2);
                 if(fitness_tmp <= BEST_FITNESS)
                 {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 3;}
 
@@ -363,6 +391,9 @@ void optimisation::frequencyOptimization(char *nom, int stable,
             }
         }
 
+        cout << "Fitness tour  "<<iteration<<"  :  "<< BEST_FITNESS << endl;
+        update_Items_ListeTabuItems(listeTabu);
+
         //Si on a trouver une meilleur permutation on la fait
         if(BEST_PERM != -1)
         {
@@ -374,22 +405,16 @@ void optimisation::frequencyOptimization(char *nom, int stable,
             porteuse = secteurs[index1]->get_porteuse();
             secteurs[index1]->set_porteuse(secteurs[index2]->get_porteuse());
             secteurs[index2]->set_porteuse(porteuse);
+
+
+            int* conf = new int[nb_secteur_a];
+
+            for(int i = 0; i < nb_secteur_a; i++){conf[i] = lesSecteurA[i]->get_porteuse();}
+
+            int dureeTabU = 5;
+
+            add_Item_ListeTabuItems(listeTabu,conf,dureeTabU);
         }
-
-        cout << "Fitness tour  "<<iteration<<"  :  "<< BEST_FITNESS << endl;
-
-        int* conf = new int[nb_secteur_a];
-
-        for(int i = 0; i < nb_secteur_a; i++){
-            conf[i] = lesSecteurA[i]->get_porteuse();
-        }
-
-        int dureeTabU = 5;
-
-        update_Items_ListeTabuItems(listeTabu);
-        add_Item_ListeTabuItems(listeTabu,conf,dureeTabU);
-
-
     }
 
 
