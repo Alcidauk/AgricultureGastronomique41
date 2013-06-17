@@ -263,50 +263,6 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 
     cout << "Nombre de secteurs actifs: " << nb_secteur_a << endl;
 
-    // nombre d'itérations avant d'arrêter l'algo. Un autre critère plus efficace pourrait être choisi ?!
-    // par ex si fitness n'évolue plus.
-    for( nbIteration; nbIteration < 2; nbIteration++){
-
-        cout<<"best_nb_clients_non_couvert : "<< best_nb_clients_non_couvert<<endl;
-
-        cout<<endl<<"--------------------------"<<endl;
-        cout<<endl<<"--------------------------"<<endl;
-
-        cout<<"Deroulement de l'algo :"<<endl<<endl;
-
-        // on teste le changement pour chaque secteur actif pour après choisir le meilleur changement.
-        for( int sect = 0; sect < nb_secteur_a; sect++){
-
-        //for( int sect = 0; sect < 2; sect++){
-
-            cout << "Secteur actif num: " << sect << endl;
-            int NB_VOISIN = 1 ;cout<<"nombre de voisin(s)  :  "<<NB_VOISIN<<endl;
-            int INDEX_SITE = lesSecteurA[sect]->get_site()->get_no();
-
-            secteur** secteurs = NULL;
-            find_closest_site(INDEX_SITE,NB_VOISIN,voisin);
-
-            for(int i=0; i<NB_VOISIN; i++)
-            {
-                cout<<"voisin "<<i+1<<" :\t"<<"num:"<<voisin[i].no_site<<"\tdistance:"<<voisin[i].dist_site_m<<endl;
-
-                find_secteur_from_site(voisin[i].no_site,lesSecteurA,nb_secteur_a,secteurs);
-                for(int j=0;j<1; j++){
-                    cout <<"\t\t ("<<secteurs[j]->get_no();
-                    cout <<")  :  "<<secteurs[j]->get_porteuse()<<endl;
-                }
-
-
-            }
-
-            delete secteurs;
-
-        }
-
-    }
-
-
-/*
         // nombre d'itérations avant d'arrêter l'algo. Un autre critère plus efficace pourrait être choisi ?!
     // par ex si fitness n'évolue plus.
     for( nbIteration; nbIteration < 2; nbIteration++){
@@ -360,8 +316,6 @@ void optimisation::frequencyOptimization(char *nom, int stable,
         }
 
     }
-    */
-
 
 
     delete_ListeTabuItems(listeTabu);
