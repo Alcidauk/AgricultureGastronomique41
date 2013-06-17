@@ -228,7 +228,7 @@ double test_permutation(int stable,pointTest** lesPTA,int nb_tp_a,
                         secteur** &secteurs,int index1,int index2)
 {
     if(secteurs[index1] == NULL || secteurs[index2] == NULL)
-        return 0;
+        return 99999;
 
 
 
@@ -286,7 +286,6 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 	double nb_clients_non_couvert = 0.0;
 	double best_nb_clients_non_couvert = Fitness::eval(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen);
 	double best_nb_clients_non_couvert2 = best_nb_clients_non_couvert+1;
-    int nbIteration = 0;
     cout<<endl<<"--------------------------"<<endl;
 
     cout << "Fitness initiale: " << best_nb_clients_non_couvert << endl;
@@ -296,11 +295,23 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 
     ListeTabuItems* listeTabu = new ListeTabuItems();
     Table_sites* voisin = NULL;
-    int NB_ITERATION = 1;
+    int NB_ITERATION = 15;
 
     int BEST_SITE = -1;     // pas de changement
     int BEST_PERM = 0;     // pas de permutation
     int BEST_FITNESS = best_nb_clients_non_couvert;
+
+
+    int tmp=-1;
+    int nb_site_a=0;
+    for(int i=0; i<nb_secteur_a;i++)
+    {
+        if(lesSecteurA[i]->get_site()->get_no() != tmp)
+        {
+            nb_site_a++;
+            tmp = lesSecteurA[i]->get_site()->get_no();
+        }
+    }
 
     int* sites_visites = new int[nb_secteur_a/3];
     int no_site = -1;
@@ -312,7 +323,6 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 
     for(int iteration=0; iteration<NB_ITERATION;iteration++ )
     {
-        cout<<endl<<endl;
         //On nettoie la liste des passages
         for( int site=0; site < nb_secteur_a/3; site++)sites_visites[site] = 0;
         BEST_SITE = -1;BEST_PERM = -1;
@@ -336,15 +346,15 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 
                 //ESSAI permutation (1)       secteurs[0] <-> secteurs[1]
                 fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,0,1);
-                if(fitness_tmp >= BEST_FITNESS)
+                if(fitness_tmp <= BEST_FITNESS)
                 {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 1;}
                 //ESSAI permutation (2)       secteurs[1] <-> secteurs[2]
                 fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,1,2);
-                if(fitness_tmp >= BEST_FITNESS)
+                if(fitness_tmp <= BEST_FITNESS)
                 {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 2;}
                 //ESSAI permutation (3)       secteurs[0] <-> secteurs[2]
                 fitness_tmp = test_permutation(stable,lesPTA, nb_tp_a, lesSecteurA, nb_secteur_a, no_scen,secteurs,0,2);
-                if(fitness_tmp >= BEST_FITNESS)
+                if(fitness_tmp <= BEST_FITNESS)
                 {BEST_FITNESS = fitness_tmp; BEST_SITE = no_site; BEST_PERM = 3;}
 
 
@@ -372,7 +382,7 @@ void optimisation::frequencyOptimization(char *nom, int stable,
             secteurs[index2]->set_porteuse(porteuse);
         }
 
-        cout << "Fitness tour  "<<++iteration<<"  :  "<< BEST_FITNESS << endl;
+        cout << "Fitness tour  "<<iteration<<"  :  "<< BEST_FITNESS << endl;
     }
 
 
