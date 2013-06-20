@@ -7,6 +7,11 @@
 
 using namespace std;
 
+#include <string>
+#include <cstring>
+#include <sstream>
+#include <iostream>
+
 ///méthode de descente simple pour l'allocation des fréquences
 
 //cette methode explore ls site 1 a la suite de l'autre selon leur ordre de stockage de fichier
@@ -314,12 +319,13 @@ void optimisation::frequencyOptimization(char *nom, int stable,
 
     ListeTabuItems* listeTabu = new ListeTabuItems();
     Table_sites* voisin = NULL;
-    int NB_CLIENT= 1538;
-    int NB_ITERATION = 150;
+    double NB_CLIENT= 3846;
+    int NB_ITERATION = 100;
     int DUREE_TABU = 20;
 
     int* BEST_CONF = new int[nb_secteur_a];
     for(int i = 0; i < nb_secteur_a; i++){BEST_CONF[i] = lesSecteurA[i]->get_porteuse();}
+    int INIT_FITNESS = best_nb_clients_non_couvert;
     int BEST_FITNESS = best_nb_clients_non_couvert;
 
     int ITERATE_SITE = -1;     // pas de changement
@@ -452,6 +458,29 @@ void optimisation::frequencyOptimization(char *nom, int stable,
         add_Item_ListeTabuItems(listeTabu,conf,DUREE_TABU);
 
     }
+
+    ///JUSTE POUR LES TESTES
+
+    std::ostringstream ss;
+    GOutputFile test("Resultat_3846.txt");
+	test.open();
+    test << NB_ITERATION << "\t" << DUREE_TABU<< "\t";
+    std::string s = ss.str();
+
+    double i = (INIT_FITNESS / NB_CLIENT) * 100;
+    ss << i;
+    s = ss.str();
+    test << INIT_FITNESS <<"   "<<s<<"%  \t" ;
+
+    double ii = BEST_FITNESS/NB_CLIENT*100;
+    std::ostringstream sss;
+    sss << ii;
+    s = sss.str();
+    test << BEST_FITNESS <<"   "<<s<<"%  "<<"\n";
+
+    test.close();
+
+    ///FIN
 
 
 
