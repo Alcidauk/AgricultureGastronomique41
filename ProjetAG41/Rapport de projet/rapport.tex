@@ -153,12 +153,20 @@ Cependant, il n'est pas aisé de savoir si des clients observent des interféren
 	La première méthode possible, la plus évidente aussi, est le choix d'une solution aléatoire. Dans ce cas, aléatoire signifie une attribution de la fréquence 1, 2 ou 3 aux secteurs d'un site de façon non redondante, mais sans se préoccuper des autres sites.\\
 	Une fois les paramètres de cette méthode choisi, l'algorithme a été implémenté dans le logiciel afin de tester la méthode. Le code de l'algorithme est disponible en annexe 1.\\
 	La fonction en annexe est appelée pour chaque sites. Ainsi, à chaque fois, le but est de créer un tableau de taille 3. Chaque case du tableau est remplie par un chiffre, soit 0, soit 1, soit 2. Ces trois chiffres permettent de donner un indice et donc une fréquence à chacun des trois secteurs d'un site.\\
-	Pour cela, on va créer deux tableaux, un destiné à être retourné, un autre qui va servir de support. Ce dernier reçoit les trois fréquences à allouer. A chaque fois, on prend aléatoirement une case de ce tableau et on la recopie dans le tableau à retourner.  Cette case est alors supprimée du tableau pour éviter la redondance de fréquence sur le même secteur. En répétant cette opération, on peut retourner un tableau généré de façon aléatoire avec une fréquence affectée à chaque case.
+	Pour cela, on va créer deux tableaux, un destiné à être retourné, un autre qui va servir de support. Ce dernier reçoit les trois fréquences à allouer. A chaque fois, on prend aléatoirement une case de ce tableau et on la recopie dans le tableau à retourner.  Cette case est alors supprimée du tableau pour éviter la redondance de fréquence sur le même secteur. En répétant cette opération, on peut retourner un tableau généré de façon aléatoire avec une fréquence affectée à chaque case.\\
+	L'appel de cette fonction pour chaque secteur actif permet de construire un tableau complet avec une affectation de fréquences totalement aléatoire.\\
+	Après avoir implémenté cette méthode, il est apparu que la fitness correspondante à la solution aléatoire générée était tout à fait satisfaisante. Il a donc été choisi de la garder.
+	
+	\section{Optimisation de la solution}
+	
+	Une fois un première solution trouvée, le travail consiste à l'améliorer du mieux possible. Comme indiqué plus en amont dans ce rapport, l'algorithme d'optimisation choisi est la recherche tabou.
 	
 	
 \section{Implémentation de la recherche tabou}
 
 \chapter{Résultats observés}
+
+\chapter{Problèmes rencontrés}
 
 \chapter{Conclusion}
 L'algorithme de recherche tabou est fonctionnel. Il permet d'obtenir une fitness très satisfaisante afin d'offrir aux clients la meilleur couverture réseau.
