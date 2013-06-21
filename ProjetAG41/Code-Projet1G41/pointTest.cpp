@@ -122,7 +122,8 @@ void pointTest::load_scenarii_file(char * scenarii_file_name, int nb_sce, int* n
 
     int val=-1, select_c=-1, i_c=-1, j_c=-1;
     for(int i=0; i<nb_scenarii_total; i++) {
-        for (int j = 0; j < repartition_func[i][size_tp]/1000/5; j++) {
+        //for (int j = 0; j < repartition_func[i][size_tp]/1000/5; j++) {
+        for (int j = 0; j < repartition_func[i][size_tp]/1000/2; j++) {
             val = Random::aleatoire(repartition_func[i][size_tp]);
             select_c = MathB::find_dichotomie(val, repartition_func[i], size_tp+1) -1;
             nb_clients_scen[i][select_c]++;
@@ -134,7 +135,8 @@ void pointTest::load_scenarii_file(char * scenarii_file_name, int nb_sce, int* n
 
      file_sortie.open();
 
-     file_sortie << "le nombre de clients tires" << repartition_func[0][size_tp]/1000/5 << "\n";
+     //file_sortie << "le nombre de clients tires" << repartition_func[0][size_tp]/1000/5 << "\n";
+     file_sortie << "le nombre de clients tires" << repartition_func[0][size_tp]/1000/2 << "\n";
      //file_sortie << "le nombre de clients tires" << repartition_func[1][size_tp]/1000/5 << "\n";
      //file_sortie << "le nombre de clients tires" << repartition_func[2][size_tp]/1000/5 << "\n";
 
