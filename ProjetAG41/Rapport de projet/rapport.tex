@@ -1,9 +1,7 @@
 \documentclass[a4paper, 11pt]{report}
 \usepackage[utf8]{inputenc} 
 \usepackage[T1]{fontenc}
-\usepackage[frenchb]{babel} %ou \usepackage[francais]{babel} 
 \usepackage{url} %écrire des adresses cliquables
-\usepackage{lmodern} %changer pack de police
 \usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry} %gérer les marges
 \usepackage{color}
 \usepackage[babel=true]{csquotes} % csquotes va utiliser la langue définie dans babel
@@ -18,9 +16,16 @@
 \newcolumntype{M}[1]{>{\raggedright}m{#1}}
 \usepackage{wrapfig}
 
+\input{modele}
+	
+\titleformat{\chapter}[hang]{\bf\huge}{\thechapter}{2pc}{} 
+\renewcommand{\appendixpagename}{Annexes}  
+\renewcommand{\appendixtocname}{Annexes}  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
+
+
 
 
 % placement des elements
@@ -93,10 +98,13 @@
 
 
 \maketitle
-\tableofcontents 
+\newpage
+	
+\shorttoc{Sommaire}{0}
 %%%%%%%%
 
-\chapter{Introduction}
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
 Afin de clore l'étude concernant l'optimisation et la recherche opérationnelle, un projet a été proposé. Ce projet concerne l'affectation de fréquences dans le cadre d'antennes pour les réseaux mobiles. L'enjeu réside dans le fait que cette affectation se joue sur un carte qui est familière ici puisque l'on se concentrera sur le Territoire de Belfort.\\
 Le problème d'affectation de fréquences est un problème type en recherche opérationnelle. Il est donc connu de tous les initiés de cette discipline.\\
 Plus précisément, ce problème s'apparente à un problème de coloration de graphe. Il s'agit ici d'attribuer des fréquences à différents secteurs d'une même zone. La contrainte consiste à éviter le plus possible que deux secteurs limitrophes émettent sur la même fréquence.\\
@@ -271,55 +279,53 @@ Dans tous les cas, l'algorithme ajoute la solution précédente dans la liste ta
 	
 	
 	
-
 \chapter{Résultats observés}
 
-    \paragraph{}Après avoir terminé la mise en place des algorithmes, nous avons procédé à une
-    batterie de tests afin de déterminer le nombre d'itération et la durée de tabou les plus
-    efficaces. Nous avons donc exécuté le programme plusieurs fois en alternant le nombre
-    d'itération et la durée tabou entre les valeurs 5, 10, 15, 20 et 100.
-
-    \paragraph{}Un fois les tests réalisés, dans on un premier temps on a cherché à définir le
-    nombre d'itération le plus intéressant, c'est à dire un nombre suffisamment élevé pour permettre au
-    projet de trouver une solution pertinente assez faible pour éviter au programme de tourner trop
-    longtemps alors que la meilleur solution locale est obtenue.  
+    \paragraph{}Après avoir terminé la mise en place des algorithmes, une batterie de tests a été effectuée afin de déterminer le nombre d'itération et la durée de tabou les plus efficaces. Le programme a donc été exécuté plusieurs fois en alternant le nombre d'itération et la durée tabou entre les valeurs 5, 10, 15, 20 et 100.
+    \paragraph{}Au terme de ces tests, dans un premier temps, le nombre d'itérations le plus intéressant a tenté d'être défini. Il fallait trouver un nombre suffisamment élevé pour permettre au
+projet de trouver une solution pertinente. Cela signifie qu'il fallait arriver à une fitness assez faible pour éviter au programme de tourner trop
+    longtemps alors qu'une solution satisfaisant a été obtenue.  
     \begin{center} \includegraphics[width=13cm]{tableau_nombre_iteration} \end{center}
-    \paragraph{} Suite à nos tests on peut constater que le plus grand écart entre les solutions
-    initiales et les solutions finales apparait après 50 itération.
+    \paragraph{} La mise en forme dans des graphiques a donc permis de les exploiter. Suite aux tests, on peut constater que le plus grand écart entre les solutions
+    initiales et les solutions finales apparaît après 50 itération.
 
-    \paragraph{}Dans un second temps, de la même manière on a cherché à optimisé la valeur de la
-    durée tabou, on a donc procédé des tests afin de comparer les différentes valeurs.
-    Une bonne durée tabou permet de retirer une solution durant une durée suffisante pour que le
+    \paragraph{}Dans un second temps et de la même manière, la valeur de la durée tabou a été fixée. Des tests ont donc aussi été mis en place afin de trouver une valeur optimale.
+    Une bonne durée tabou permet de tirer une solution durant une durée suffisante pour que le
     programme puisse s'éloigner de la solution actuelle pour chercher une nouvelle piste.
     \begin{center} \includegraphics[width=14cm]{tableau_duree_tabou} \end{center}
-    \paragraph{}Suite à nos tests on constate que les valeurs les plus pertinentes sont 10 et 20,
-    la différence jouant sur le nombre d'itération. Dans l'implémentation de notre solution la durée
-    tabou nécessite d'être supérieur à 5 car pour chaque sites 3 permutations sont possible et si
-    celle si ne varie pas ou peu l'algorithme restera bloquer sur un site sans visiter les autre
-    solution. Une valeur de 10 à 20 permet au programme, dans les cas où les permutations sont
-    égales, de visiter des solutions un peu plus éloigné.
+    \paragraph{}Suite à ces tests, on constate que les valeurs les plus pertinentes sont de 10 et 20,
+    la différence jouant sur le nombre d'itération. Dans l'implémentation de la solution, la durée
+    tabou nécessite d'être supérieur à 5 car pour chaque sites 3 permutations sont possible. Si
+    celle-ci ne varie pas ou peu, l'algorithme peut rester bloqué sur un site sans visiter les autres
+    solutions. Une valeur de 10 à 20 permet au programme, dans le cas où les permutations sont
+    égales, de visiter des solutions un peu plus éloignes.
 
 
-    \paragraph{}Ensuite on a réuni nos résultats dans un même graphique afin de représenter les
-    meilleurs solutions.
+    \paragraph{}Afin de mieux formaliser ces résultats aux tests, les deux séries ont été réunies dans un graphique, représenté ci-dessous.
     \begin{center} \includegraphics[width=14cm]{tableau_bubulle} \end{center}
     \paragraph{}Le graphique confirme bien les résultats des précédents graphes, la solution avec 50
     itérations et une durée tabou de 10 est la plus efficace.
 
 \chapter{Problèmes rencontrés}
 
-\chapter{Conclusion}
-L'algorithme de recherche tabou est fonctionnel. Il permet d'obtenir une fitness très satisfaisante afin d'offrir aux clients la meilleur couverture réseau.
+	Le premier problème rencontré lors du déroulement de ce projet a été la compréhension du sujet. En effet, de nombreux termes techniques sont utilisés et s'ils ne sont pas indispensable à la partie du programme sur lequel le projet intervenait, la compréhension du projet dans son ensemble était importante afin de mieux réaliser les fonctions demandées. Il a donc fallu comprendre des termes comme par exemple site, secteur, antenne ou encore porteuse.\\
+	Une fois les concepts techniques principaux compris, un second problème s'est posé: le choix des méthodes à utiliser. Plusieurs étaient disponible et le choix influe sur la performance de l'algorithme. Un compromis a donc été choisi avec la méthode de l'aléatoire puis du tabou. Ces méthodes sont assez efficaces et simple à mettre en œuvre. Une fois les méthodes identifiées, le projet semblait facilement réalisable puisque la méthode était comprise de tous dans le groupe.\\
+	Cependant, une dernière difficulté a due être surmontée. Cette difficulté est causée par le logiciel dans son ensemble. En effet, c'est un logiciel très important et donc relativement complexe, avec de longues parties de code. Il a fallu étudier celui-ci pour savoir ce qui était déjà réalisé en terme de fonctions. Cela a permis d'éviter des redondances de codes en réutilisant des fonctions existantes. D'autres étaient indispensables puisqu'elles devaient permettre de retrouver les information nécessaires à la résolution du projet.\\
+	Ces problèmes ont tous pu être surmontés puisque le projet est fonctionnel et réutilise le plus possible ce qui était déjà codé.
 
-Des améliorations restent possibles en modifiant la méthode du choix des voisins à chaque itération, ou en modifiant la durée de la liste tabou.\\
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
 
-L'exercice est intéressant car il demande de s'immiscer dans un programme déjà existant, de le comprendre afin d'y ajouter les fonctions à développer. C'est un exercice réaliste puisque dans le monde de l'entreprise, les programmes à développer partent rarement de zéro.\\
+Au terme de ce projet, l'algorithme de recherche tabou est fonctionnel. Il permet d'obtenir une fitness très satisfaisante afin d'offrir aux clients la meilleur couverture réseau.\\
+Naturellement, des améliorations restent possibles en modifiant la méthode du choix des voisins à chaque itération, ou en modifiant la durée de la liste tabou. Cependant, de nombreux tests semblent indiquer qu'un bon compromis entre nombre d'itérations et durée tabou a été trouvé.\\
+L'exercice a été intéressant car il demandait de s'immiscer dans un programme déjà existant, de le comprendre afin d'y ajouter les fonctions à développer. C'est un exercice réaliste puisque dans le monde de l'entreprise, les programmes à développer partent rarement de zéro. C'est donc une bonne expérience d'autant plus que le résultat est concluant.\\
+L'utilisation du langage C++ était aussi une bonne chose puisqu'elle a permis de se perfectionner dans celui-ci et de découvrir de nouvelles subtilités du langage. Pour partager les sources du programme, l'utilisation d'un logiciel de gestion de version (ici Git) a facilité la tâche.\\
+Enfin ce projet a été une expérience enrichissante car effectué au sein d'un groupe de trois étudiants. La communication est importante ainsi que la répartition des tâches. Le travail en groupe a permis le partage des compétences et des idées. \\
 
-Ce projet nous a également permis de nous perfectionner dans le langage C++, de découvrir de nouvelles subtilités et d'améliorer notre manière de programmer. Pour partager les sources du programme, l'utilisation d'un logiciel de gestion de version facilite la tâche.\\
+\newpage
+\tableofcontents
 
-Enfin ce projet a été une expérience enrichissante car effectué au sein d'un groupe de trois étudiants. La communication est importante ainsi que la répartition des tâches. Le travail en groupe permet le partage des compétences et des idées. \\
-
-\appendix
+\begin{appendices}
 \chapter{Génération de la solution initiale}
 \begin{lstlisting}
 int* site::randomizeTableFreq(){
@@ -680,5 +686,7 @@ void optimisation::frequencyOptimization(char *nom, int stable, pointTest** lesP
 
 }
 \end{lstlisting}
+
+\end{appendices}
 
 \end{document}
