@@ -1,19 +1,19 @@
-\documentclass[a4paper, 12pt]{report}
+\documentclass[a4paper, 11pt]{report}
 \usepackage[utf8]{inputenc} 
 \usepackage[T1]{fontenc}
 \usepackage[frenchb]{babel} %ou \usepackage[francais]{babel} 
 \usepackage{url} %écrire des adresses cliquables
 \usepackage{lmodern} %changer pack de police
-\usepackage[top=3cm, bottom=3cm, left=2.5cm, right=2.5cm]{geometry} %gérer les marges
+\usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry} %gérer les marges
 \usepackage{color}
 \usepackage[babel=true]{csquotes} % csquotes va utiliser la langue définie dans babel
 \usepackage{graphicx}
 \usepackage[space]{grffile}
 \usepackage{listings}
 \lstset{language=C,basicstyle=\small,frame=leftline,captionpos=b,linewidth=175mm,breaklines=true, ,identifierstyle=\ttfamily, numbers=none, numberstyle=\tiny, stepnumber=5, numberfirstline=true, showstringspaces=false}
-\input{milstd}
+%\input{milstd}
 \DeclareGraphicsExtensions{.jpeg, .png , .gif, .bmp}
-\usepackage{eurosym}
+%\usepackage{eurosym}
 \usepackage{array}
 \newcolumntype{M}[1]{>{\raggedright}m{#1}}
 \usepackage{wrapfig}
@@ -49,14 +49,14 @@
 	\vfill
 	\vspace{1cm}
 \begin{flushleft}
-	\usefont{OT1}{ptm}{m}{n}
+	%\usefont{OT1}{ptm}{m}{n}
 	\huge \@title
 \end{flushleft}
 	\par
 	\hrule height 4pt
 	\par
 \begin{flushright}
-	\usefont{OT1}{phv}{m}{n}
+	%\usefont{OT1}{phv}{m}{n}
 	\Large \@author
 	\par
 \end{flushright}
@@ -96,35 +96,66 @@
 \tableofcontents 
 %%%%%%%%
 
-\chapter{Présentation du sujet}
-Le problème d'affectation de fréquences est un problème type en recherche opérationnelle. Ce problème s'apparente à un problème de coloration de graph.
-Il s'agit ici d'attribuer des fréquences à différents secteurs d'une même zones. Deux secteurs limitrophes ne pouvant pas émettre sur la même fréquence.
+\chapter{Introduction}
+Afin de clore l'étude concernant l'optimisation et la recherche opérationnelle, un projet a été proposé. Ce projet concerne l'affectation de fréquences dans le cadre d'antennes pour les réseaux mobiles. L'enjeu réside dans le fait que cette affectation se joue sur un carte qui est familière ici puisque l'on se concentrera sur le Territoire de Belfort.\\
+Le problème d'affectation de fréquences est un problème type en recherche opérationnelle. Il est donc connu de tous les initiés de cette discipline.\\
+Plus précisément, ce problème s'apparente à un problème de coloration de graphe. Il s'agit ici d'attribuer des fréquences à différents secteurs d'une même zone. La contrainte consiste à éviter le plus possible que deux secteurs limitrophes émettent sur la même fréquence.\\
+La modélisation de ce problème représentant un travail important, le projet consiste seulement à se pencher sur la méthode de résolution. Une première partie consiste donc à trouver une solution initiale, c'est-à-dire affecter une première fois les fréquences sans se préoccuper outre mesure de l'efficacité de cette affectation. La seconde partie consiste à améliorer cette affectation en proposant des solutions plus efficaces à l'aide d'un algorithme de notre choix. Ici, le choix s'est porté sur un algorithme de recherche tabou.
 
-\section{Détails du problème}
-Le département étudié, ici le Territoire de Belfort comporte 36, chacun étant divisé en maximum trois secteurs pour un total de 88 secteurs. Chaque secteur d'un même site émet sur la sous-bande fréquence 1, 2 ou 3. 
+\chapter{Présentation du sujet}
+
+	\section{Détails du problème}
+	Le département étudié, ici le Territoire de Belfort comporte 36 secteurs, chacun étant divisé en maximum trois secteurs. On obtient ainsi un total de 88 secteurs. Trois fréquences sont disponibles pour chaque secteur. Ces fréquences sont donc numérotées 1, 2 et 3 afin de reconna\^itre facilement celle-ci. \\
 
 \begin{center}
-	\includegraphics[scale=1]{carte.png} 
-	\includegraphics[scale=1]{ruche.png} 
+	\includegraphics[width=5cm]{carte.png}\\
+	\emph{Cette carte représente le territoire qui sera étudié par ce projet soit le département du Territoire de Belfort.\\}
 \end{center}
 
-Pour que les clients soient couvert, les secteurs ayant une frontière communes doivent avoir des fréquences différentes afin de minimiser les interférences. Au sein du territoire 12 695 points test permettent d'évaluer la qualité de l'allocation des fréquences. Chaque points test est caractérisé par un nombre de clients et le débit qu'il souhaite avoir. Le nombre de clients n'ayant pas accès au réseau est donc la fitness à minimiser.
+	Chaque secteur reçoit donc dans son affectation  un secteur en fréquence 1, un autre en fréquence 2 et un dernier en fréquence 3. Sur la carte ci-dessous, on peut voir l'agencement théorique de sites entre eux ainsi que la division en secteurs de ceux-ci.
+	
+	\begin{center}
+		\includegraphics[width=5cm]{ruche}\\
+		\emph{Chaque site est délimité en trois secteurs ici identiques mais qui peuvent en réalité varier et ont des frontières plus floues.\\}
+	\end{center}
 
-\section{Objectifs}
-Afin d'assurer l'accès au réseau au maximum de clients, il s'agit d'allouer les fréquences à chaque secteur de chaque sites de manière à minimiser le nombre de clients non-couvert par le réseau.
+Pour que les clients soient couvert, les secteurs ayant une frontière communes doivent avoir des fréquences différentes afin de minimiser les interférences.\\
+Cependant, il n'est pas aisé de savoir si des clients observent des interférences. C'est pourquoi, au sein du territoire, 12 695 points test permettent d'évaluer la qualité de l'allocation des fréquences. Chaque points test est caractérisé par un nombre de clients et le débit souhaité pour chacun. 
+
+	\section{Objectifs}
+
+	L'objectif ici se cache derrière un premier objectif d'ordre technique. En effet, il faut tout d'abord réduire au maximum le nombre de fréquences égales qui se chevaucheraient. Par le chevauchement, on entend une frontière entre deux secteurs, de sites différents, affectés à la même fréquence.\\
+	Cependant, derrière cet objectif, le fait de minimiser les conflits, un autre objectif final se cache. Chaque interférence générée par un conflit génère en effet une zone dans laquelle le signal risque fortement d'\^etre perturbé et d’empêcher l'utilisation d'un téléphone par un client potentiel. C'est donc ce problème que l'on cherche à minimiser.
+
 
 \chapter{Principe de résolution}
-Pour résoudre ce type de problème, l'utilisation de méthode exacte demanderait le calcul de 6\up{36} soit environ 10\up{28} allocation de fréquences différentes. C'est pourquoi pour ce genre de problème ou le nombre de solution est trop importante, les méthode de résolution approchée sont utilisées.
+	
+	La résolution de ce problème peut se faire de deux façons totalement différentes. La première est de manière exacte. L'utilisation de méthode exacte demanderait le calcul de 6\up{36} soit environ 10\up{28} allocation de fréquences différentes. Le temps de calcul n'est donc pas réalisable aujourd'hui, les ordinateurs actuels n'étant pas assez puissants. C'est pourquoi pour ce genre de problème ou le nombre de solution est trop importante, les méthode de résolution approchée sont utilisées.
 
-\section{Méthode approchées}
-Le principe de cette méthode de résolution est simple. On cherche d'abord une solution au problème, soit de manière aléatoire, soit en en calculant pas trop mauvaise.
-On définit ensuite une liste de voisin à cette solution. Un voisin d'une solution suit des règles précises, définit au préalable. On calcule la fitness de tous les voisins et on garde la meilleur solution trouvées parmi elles. Il suffit ensuite de réitérer l'opération sur la nouvelle solution afin d'améliorer le résultat jusqu'à ce qu'aucun voisin ne soit meilleur que la solution courante.
+		\section{Le choix d'une méthode approchée}
+		Le principe de cette méthode de résolution est simple. On cherche d'abord une solution au problème, soit de manière aléatoire, soit en en calculant pas trop mauvaise.
+		Une liste de voisins à cette solution est ensuite définie. Les voisins sont alors issus de règles précises définies auparavant suivant la méthode approchée à utiliser.
+		Il faut ensuite évaluer tous ces voisins afin d'améliorer la solution si possible. La réitération de cette méthode un grand nombre de fois permet de balayer de nombreuses solutions et d'approcher voire de trouver la solution optimale.\\
+		L'avantage de ces méthodes approchées est qu'à défaut d'être certain de trouver à coup sûr la bonne solution, il est toujours possible de trouver une solution dont on peut se satisfaire et ce, de manière beaucoup plus rapide que pour une méthode exacte.\\
+		Parmi les méthodes approchées, un choix a dû être fait pour ce projet. Ce choix s'est porté sur l'algorithme de la recherche tabou.
 
-\section{La recherche tabou}
-La recherche tabou est une amélioration de l'algorithme énoncé précédemment. Le principe est similaire cependant lorsqu'une solution voisine est étudiée, elle est placé ensuite dans la liste tabou pendant plusieurs itérations et ne pas reconsidérée. Cet optimisation permet de ne pas perdre de temps en recalculant les mêmes solutions à chaque fois.
+		\section{La recherche tabou}
+		L'algorithme de recherche tabou permet d'améliorer une simple recherche du meilleur voisin (méthode du hill climbing). En effet, si l'on recherche simplement le meilleur voisin à chaque itération, il est possible quel l'algorithme bloque sur un extremum local. Si la solution n'a que des voisins plus mauvais, l'algorithme va donc considérer que c'est la meilleure solution, même si une solution plus intéressante est disponible.\\
+		La recherche tabou permet d'éviter de bloquer dans la plupart des extremums locaux. Cela paraissait donc un choix intéressant dans le cas de l'affectation de fréquences. En effet, le nombre de solution étant relativement important, il est très fortement probable que des extremums locaux existent. L'utilisation de la recherche tabou va éviter de rester bloquer dans un extremum et ainsi d'explorer plus de solutions dans un même nombre d'itérations. Le principe de recherche des voisins de la recherche tabou étant similaire au hill climbing, peu de modifications sont nécessaires. Il suffit, lorsqu'une solution voisine est étudiée, de la placer dans une liste "tabou". On lui attribue alors une durée tabou qui va permettre d'indiquer le nombre d'itérations durant lequel il sera interdit de retourner sur la solution. La liste tabou va donc enregistrer toutes les solutions actuellement interdites ainsi que la durée restante. Dans le cas où une solution présente dans la liste tabou est un extremum local, on évitera ainsi d'y retourner et l'on pourra s'en éloigner.
 
 \chapter{Algorithme développé}
-\section{Génération de la solution initiale}
+
+	Comme déjà abordé précédemment, deux partie ont été nécessaires pour pouvoir générer une solution optimale. La première partie consiste à générer une première solution, la seconde à l'améliorer.
+
+	\section{Génération de la solution initiale}
+	
+	Pour la recherche d'une première solution, la démarche s'est effectuée en plusieurs étapes. La première consistait à lister les méthodes possibles, la seconde à l'implémenter et enfin la dernière à l'évaluer afin de savoir s'il est possible de s'en satisfaire.\\
+	La première méthode possible, la plus évidente aussi, est le choix d'une solution aléatoire. Dans ce cas, aléatoire signifie une attribution de la fréquence 1, 2 ou 3 aux secteurs d'un site de façon non redondante, mais sans se préoccuper des autres sites.\\
+	Une fois les paramètres de cette méthode choisi, l'algorithme a été implémenté dans le logiciel afin de tester la méthode. Le code de l'algorithme est disponible en annexe 1.\\
+	La fonction en annexe est appelée pour chaque sites. Ainsi, à chaque fois, le but est de créer un tableau de taille 3. Chaque case du tableau est remplie par un chiffre, soit 0, soit 1, soit 2. Ces trois chiffres permettent de donner un indice et donc une fréquence à chacun des trois secteurs d'un site.\\
+	Pour cela, on va créer deux tableaux, un destiné à être retourné, un autre qui va servir de support. Ce dernier reçoit les trois fréquences à allouer. A chaque fois, on prend aléatoirement une case de ce tableau et on la recopie dans le tableau à retourner.  Cette case est alors supprimée du tableau pour éviter la redondance de fréquence sur le même secteur. En répétant cette opération, on peut retourner un tableau généré de façon aléatoire avec une fréquence affectée à chaque case.
+	
+	
 \section{Implémentation de la recherche tabou}
 
 \chapter{Résultats observés}
