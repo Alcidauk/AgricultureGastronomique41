@@ -137,7 +137,9 @@ void add_Item_ListeTabuItems(ListeTabuItems* liste,int* conf, int dureeTabu){
     }
     TabuItem* item = new TabuItem();
     item->conf = conf;
-    item->dureeTabu = dureeTabu;
+
+    int random = Random::aleatoire(6) - 3; // Random entre -3 et 3
+    item->dureeTabu = dureeTabu + random;
     liste->ListeItems[liste->nbItems - 1] = item;
 }
 
